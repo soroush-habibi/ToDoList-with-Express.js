@@ -1,0 +1,22 @@
+{
+  "name": "todolist-with-express",
+  "version": "1.0.0",
+  "description": "make a ToDoList with Node.js",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/soroush-habibi/ToDoList-with-Express.js.git"
+  },
+  "keywords": [
+    "express.js"
+  ],
+  "author": "Soroush Habibi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/soroush-habibi/ToDoList-with-Express.js/issues"
+  },
+  "homepage": "https://github.com/soroush-habibi/ToDoList-with-Express.js#readme"
+}
