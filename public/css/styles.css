@@ -1,0 +1,11 @@
+html{
+    font-size: 20px;
+}
+
+.container{
+    max-width: 960px;
+}
+
+form{
+    background-color: #e5e5e5;
+}
