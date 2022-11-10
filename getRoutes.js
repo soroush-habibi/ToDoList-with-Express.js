@@ -66,6 +66,8 @@ router.get("/", (req, res, next) => {
                 </div>
             </div>
         </div>
+        <script src="js/axios.js"></script>
+        <script src="js/script.js"></script>
     </body>
     
     </html>`;
