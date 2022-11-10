@@ -31,14 +31,14 @@ router.get("/", (req, res, next) => {
                 <div class="col">
                     <form action="/add-task" method="post" class="p-2 rounded-3 border">
                         <div class="input-group input-group-lg">
-                            <input type="text" name="title" class="form-control shadow-none"
+                            <input type="text" name="title" class="form-control shadow-none  input-title"
                                 placeholder="Enter a new title" />
                             <button class="btn btn-primary shadow-none" type="submit">
                                 Add new task
                             </button>
                         </div>
                         <div class="form-check mt-1 mb-0">
-                            <input class="form-check-input shadow-none" type="checkbox" name="completed" id="my-checkbox" />
+                            <input class="form-check-input shadow-none input-completed" type="checkbox" name="completed" id="my-checkbox" />
                             <label class="form-check-label user-select-none" for="my-checkbox">
                                 The task is completed.
                             </label>
