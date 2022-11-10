@@ -7,7 +7,6 @@ ul.addEventListener('click', async (e) => {
         let response;
         try {
             response = await axios.post("/toggle-task", { id });
-            console.log(response.data);
             if (response.data === "true") {
                 element.parentElement.querySelector(".user-select-none").innerHTML = "Completed";
                 element.parentElement.querySelector(".user-select-none").classList.remove("bg-secondary");
@@ -25,6 +24,19 @@ ul.addEventListener('click', async (e) => {
             // location.reload();
         } catch (e) {
             console.log(e.response.data);
+        }
+    } else if (element.classList.contains("delete-btn")) {
+        let response;
+        try {
+            response = await axios.post("/delete-task", { id });
+            console.log(response.data);
+            if (response.data === "true") {
+                location.reload();
+            } else {
+                alert("Not Found!");
+            }
+        } catch (e) {
+            console.log(e.message);
         }
     }
 });

@@ -1,6 +1,7 @@
 import express from "express";
 
 import Task from "./task.js"
+import DB from "./db.js";
 
 const router = express.Router();
 
@@ -33,7 +34,7 @@ router.post("/toggle-task", (req, res, next) => {
             try {
                 task.save();
             } catch (e) {
-                console.log(e.message);
+                res.send(e.message);
             }
             if (task.completed) {
                 res.json("true");
@@ -42,6 +43,23 @@ router.post("/toggle-task", (req, res, next) => {
             }
         } else {
             res.status(404).send("<h1>Not Found!</h1>");
+        }
+    } else {
+        res.status(401).send("<h1>Bad Request</h1>");
+    }
+});
+
+router.post("/delete-task", (req, res, next) => {
+    if (req.body.id) {
+        try {
+            const bool = DB.deleteTaskById(req.body.id);
+            if (bool) {
+                res.json("true");
+            } else {
+                res.json("false");
+            }
+        } catch (e) {
+            res.send(e.message);
         }
     } else {
         res.status(401).send("<h1>Bad Request</h1>");
