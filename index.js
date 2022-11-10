@@ -15,6 +15,6 @@ app.use("/", express.static(path.join(__dirname, "public")));
 app.use("/", getRoutes);
 app.use("/", postRoutes);
 
-app.listen(3000, () => {
-    console.log("Server is running on port 3000");
+app.listen(Number(process.env.PORT), () => {
+    console.log(`Server is running on port ${Number(process.env.PORT)}`);
 })
