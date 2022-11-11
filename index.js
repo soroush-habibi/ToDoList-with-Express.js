@@ -2,8 +2,8 @@ import path from "path";
 import { fileURLToPath } from 'url';
 import "dotenv/config";
 import express from "express";
-import getRoutes from "./getRoutes.js";
-import postRoutes from "./postRoutes.js";
+import getRoutes from "./routes/getRoutes.js";
+import postRoutes from "./routes/postRoutes.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 

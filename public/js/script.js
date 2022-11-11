@@ -6,6 +6,7 @@ const inputCompleted = document.querySelector(".input-completed");
 form.addEventListener('submit', async (e) => {
     e.preventDefault();
     let response;
+    let id;
     let title;
     let completed;
 
@@ -14,15 +15,19 @@ form.addEventListener('submit', async (e) => {
             title = inputTitle.value;
             completed = inputCompleted.checked;
             response = await axios.post("/add-task", { title, completed });
+            id = Number(response.data);
         } else {
             title = inputTitle.value;
             completed = inputCompleted.checked;
             response = await axios.post("/add-task", { title: inputTitle.value });
+            id = Number(response.data);
         }
 
-        if (response.data === true) {
+        if (response.status !== 400) {
+            console.log(response.status);
             const li = document.createElement('li');
             li.setAttribute('class', 'list-group-item d-flex bg-light');
+            li.setAttribute('data-id', `${id}`);
             li.innerHTML = `<span class="flex-grow-1 d-flex align-items-center">
             <label>${title}</label>
             <span class="badge ${completed ? "bg-success" : "bg-secondary"} ms-auto me-3 user-select-none">${completed ? "Completed" : "In progress"}</span>

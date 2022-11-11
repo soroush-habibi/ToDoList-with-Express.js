@@ -1,13 +1,9 @@
-import express from "express";
-import fs from "fs";
+import Task from "../models/task.js"
 
-import Task from "./task.js"
-
-const router = express.Router();
-
-router.get("/", (req, res, next) => {
-    const tasks = Task.allData(true);
-    const template = `<!DOCTYPE html>
+export default class getController {
+    static homePage(req, res, next) {
+        const tasks = Task.allData(true);
+        const template = `<!DOCTYPE html>
     <html lang="en">
     
     <head>
@@ -51,7 +47,7 @@ router.get("/", (req, res, next) => {
                 <div class="col">
                     <ul class="list-group lh-lg">
                             ${tasks.map((data) => {
-        return `<li class="list-group-item d-flex bg-light" data-id="${data.id}">
+            return `<li class="list-group-item d-flex bg-light" data-id="${data.id}">
                                 <span class="flex-grow-1 d-flex align-items-center">
                                     <label>${data.title}</label>
                                     <span class="badge ${data.completed ? "bg-success" : "bg-secondary"} ms-auto me-3 user-select-none">${data.completed ? "Completed" : "In progress"}</span>
@@ -60,8 +56,8 @@ router.get("/", (req, res, next) => {
                                 <button class="btn btn-sm btn-primary me-3 edit-btn">Edit</button>
                                 <button class="btn btn-sm btn-danger delete-btn">Delete</button>
                             </li>`
-    })
-            .join("")}
+        })
+                .join("")}
                     </ul>
                 </div>
             </div>
@@ -72,7 +68,6 @@ router.get("/", (req, res, next) => {
     
     </html>`;
 
-    res.send(template);
-});
-
-export default router;
+        res.send(template);
+    }
+}
