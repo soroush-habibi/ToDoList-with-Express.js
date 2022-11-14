@@ -1,4 +1,5 @@
 const ul = document.querySelector("ul");
+const h2 = document.querySelector("h2");
 const form = document.querySelector("form");
 const inputTitle = document.querySelector(".input-title");
 const inputCompleted = document.querySelector(".input-completed");
@@ -9,6 +10,9 @@ form.addEventListener('submit', async (e) => {
     let id;
     let title;
     let completed;
+
+    ul.classList.remove("d-none");
+    h2.classList.add("d-none");
 
     try {
         if (inputCompleted.checked) {
@@ -77,6 +81,10 @@ ul.addEventListener('click', async (e) => {
                 console.log(response.data);
                 if (response.data === "true") {
                     element.parentElement.remove();
+                    if (!document.querySelectorAll("li").length) {
+                        ul.classList.add("d-none");
+                        h2.classList.remove("d-none");
+                    }
                 } else {
                     alert("Not Found!");
                 }
@@ -87,8 +95,6 @@ ul.addEventListener('click', async (e) => {
     } else if (element.classList.contains("edit-btn")) {
         const title = element.parentElement.querySelector("label").innerHTML;
         const answer = prompt("Enter new title:", title);
-
-        console.log(answer);
 
         if (answer && answer.length >= 3) {
             try {
@@ -106,5 +112,39 @@ ul.addEventListener('click', async (e) => {
         } else if (answer) {
             alert("Title must be at least 3 character");
         }
+    }
+});
+
+document.addEventListener("DOMContentLoaded", async (e) => {
+    try {
+        const response = await axios.get("/get-all-tasks");
+        if (response.data instanceof Array) {
+            if (response.data.length) {
+                ul.classList.remove("d-none");
+                let str = "";
+
+                for (let item of response.data) {
+                    str += `<li class="list-group-item d-flex bg-light" data-id="${item.id}">
+                    <span class="flex-grow-1 d-flex align-items-center">
+                        <label>${item.title}</label>
+                        <span class="badge ${item.completed ? " bg-success" : "bg-secondary"} ms-auto me-3
+                            user-select-none">${item.completed ? "Completed" : "In progress"}</span>
+                    </span>
+                    <button class="btn btn-sm ${item.completed ? " btn-secondary" : "btn-success"} me-3
+                        toggle-btn">Toggle</button>
+                    <button class="btn btn-sm btn-primary me-3 edit-btn">Edit</button>
+                    <button class="btn btn-sm btn-danger delete-btn">Delete</button>
+                </li>`
+                }
+
+                ul.innerHTML = str;
+            } else {
+                h2.classList.remove("d-none");
+            }
+        } else {
+            console.log("Data is corrupted");
+        }
+    } catch (e) {
+        console.log(e.message);
     }
 });

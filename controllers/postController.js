@@ -17,7 +17,7 @@ export default class postController {
                 res.status(400).send(e.message);
             }
         } else {
-            res.status(400).send("<h1>Bad Request</h1>");
+            res.status(400).send("Bad Request");
         }
     }
 
