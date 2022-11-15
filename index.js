@@ -4,6 +4,7 @@ import "dotenv/config";
 import express from "express";
 import getRoutes from "./routes/getRoutes.js";
 import postRoutes from "./routes/postRoutes.js";
+import taskRoutes from "./routes/taskRoutes.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -17,6 +18,7 @@ app.use("/", express.json());
 app.use("/", express.static(path.join(__dirname, "public")));
 app.use("/", getRoutes);
 app.use("/", postRoutes);
+app.use("/tasks", taskRoutes);
 
 app.listen(Number(process.env.PORT), () => {
     console.log(`Server is running on port ${Number(process.env.PORT)}`);

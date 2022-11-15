@@ -18,17 +18,16 @@ form.addEventListener('submit', async (e) => {
         if (inputCompleted.checked) {
             title = inputTitle.value;
             completed = inputCompleted.checked;
-            response = await axios.post("/add-task", { title, completed });
-            id = Number(response.data);
+            response = await axios.post("/tasks", { title, completed });
+            id = Number(response.data.body);
         } else {
             title = inputTitle.value;
             completed = inputCompleted.checked;
-            response = await axios.post("/add-task", { title: inputTitle.value });
-            id = Number(response.data);
+            response = await axios.post("/tasks", { title });
+            id = Number(response.data.body);
         }
 
         if (response.status !== 400) {
-            console.log(response.status);
             const li = document.createElement('li');
             li.setAttribute('class', 'list-group-item d-flex bg-light');
             li.setAttribute('data-id', `${id}`);
@@ -41,10 +40,10 @@ form.addEventListener('submit', async (e) => {
         <button class="btn btn-sm btn-danger delete-btn">Delete</button>`;
             ul.appendChild(li);
         } else {
-            alert(response.data);
+            alert(response.data.message);
         }
     } catch (e) {
-        alert(e.response.data);
+        alert(e.response.data.message);
     }
 });
 
@@ -54,8 +53,8 @@ ul.addEventListener('click', async (e) => {
     if (element.classList.contains("toggle-btn")) {
         let response;
         try {
-            response = await axios.post("/toggle-task", { id });
-            if (response.data === "true") {
+            response = await axios.patch(`/tasks/${id}`, { id });
+            if (response.data.body === true) {
                 element.parentElement.querySelector(".user-select-none").innerHTML = "Completed";
                 element.parentElement.querySelector(".user-select-none").classList.remove("bg-secondary");
                 element.parentElement.querySelector(".user-select-none").classList.add("bg-success");
@@ -71,15 +70,14 @@ ul.addEventListener('click', async (e) => {
 
             // location.reload();
         } catch (e) {
-            console.log(e.response.data);
+            console.log(e.response.data.message);
         }
     } else if (element.classList.contains("delete-btn")) {
         if (confirm("Are you sure?")) {
             let response;
             try {
-                response = await axios.post("/delete-task", { id });
-                console.log(response.data);
-                if (response.data === "true") {
+                response = await axios.delete(`/tasks/${id}`);
+                if (response.data.body === true) {
                     element.parentElement.remove();
                     if (!document.querySelectorAll("li").length) {
                         ul.classList.add("d-none");
@@ -98,16 +96,16 @@ ul.addEventListener('click', async (e) => {
 
         if (answer && answer.length >= 3) {
             try {
-                const response = await axios.post("/edit-task", { id, title: answer });
-                if (response.data === true) {
+                const response = await axios.put(`/tasks/${id}`, { title: answer });
+                if (response.data.body === true) {
                     element.parentElement.querySelector("label").innerHTML = answer;
-                } else if (response.data === false) {
+                } else if (response.data.body === false) {
                     alert("Not Found");
                 } else {
-                    alert(response.data)
+                    alert(response.data.message)
                 }
             } catch (e) {
-                alert(e.response.data);
+                alert(e.response.data.message);
             }
         } else if (answer) {
             alert("Title must be at least 3 character");
@@ -117,13 +115,13 @@ ul.addEventListener('click', async (e) => {
 
 document.addEventListener("DOMContentLoaded", async (e) => {
     try {
-        const response = await axios.get("/get-all-tasks");
-        if (response.data instanceof Array) {
-            if (response.data.length) {
+        const response = await axios.get("/tasks");
+        if (response.data.body instanceof Array) {
+            if (response.data.body.length) {
                 ul.classList.remove("d-none");
                 let str = "";
 
-                for (let item of response.data) {
+                for (let item of response.data.body) {
                     str += `<li class="list-group-item d-flex bg-light" data-id="${item.id}">
                     <span class="flex-grow-1 d-flex align-items-center">
                         <label>${item.title}</label>

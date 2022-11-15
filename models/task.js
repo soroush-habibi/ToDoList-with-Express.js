@@ -112,4 +112,12 @@ export default class Task {
             return false;
         }
     }
+
+    toJSON() {
+        return {
+            id: this.id,
+            title: this.title,
+            completed: this.completed
+        }
+    }
 }
