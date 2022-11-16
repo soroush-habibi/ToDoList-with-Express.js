@@ -2,21 +2,69 @@ import Task from "../models/task.js";
 import DB from "../models/db.js";
 
 export default class taskController {
-    static getAllTasks(req, res, next) {
+    static getTasks(req, res, next) {
+        let tasks;
+        let pageCount = 0;
         try {
-            const tasks = Task.allData(true);
-            res.json({
-                success: true,
-                body: tasks,
-                message: "OK"
-            });
+            tasks = Task.allData(true);
         } catch (e) {
             res.status(500).json({
                 success: false,
                 body: null,
                 message: "DB Error"
             });
+            return;
         }
+        if (Object.keys(req.query).length === 3) {
+            const page = parseInt(req.query.page);
+            const limit = parseInt(req.query.limit);
+            const status = parseInt(req.query.status);            //0 => all   ,   1 => completed   ,   2 => in progress
+            pageCount = parseInt(Object.keys(tasks).length / limit);
+
+            if (page <= 0 || limit <= 0) {
+                res.status(400).json({
+                    success: false,
+                    body: null,
+                    message: "Bad Request"
+                });
+                return;
+            }
+
+            if (status == 0) {
+                tasks = tasks.slice((page - 1) * limit, page * limit);
+            } else if (status == 1) {
+                tasks = tasks.filter((value) => {
+                    if (value.completed) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                });
+                tasks = tasks.slice((page - 1) * limit, page * limit);
+            } else if (status == 2) {
+                tasks = tasks.filter((value) => {
+                    if (value.completed) {
+                        return false;
+                    } else {
+                        return true;
+                    }
+                });
+                tasks = tasks.slice((page - 1) * limit, page * limit);
+            } else {
+                res.status(400).json({
+                    success: false,
+                    body: null,
+                    message: "Bad Request"
+                });
+                return;
+            }
+        }
+        res.json({
+            success: true,
+            body: tasks,
+            message: "OK",
+            pageCount
+        });
     }
 
     static getTaskById(req, res, next) {

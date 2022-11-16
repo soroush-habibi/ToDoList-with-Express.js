@@ -4,7 +4,7 @@ import taskController from '../controllers/taskController.js';
 
 const router = express.Router();
 
-router.get("/", taskController.getAllTasks);
+router.get("/", taskController.getTasks);
 
 router.get("/:id", taskController.getTaskById);
 
