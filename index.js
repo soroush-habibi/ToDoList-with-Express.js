@@ -5,6 +5,9 @@ import express from "express";
 import getRoutes from "./routes/getRoutes.js";
 import postRoutes from "./routes/postRoutes.js";
 import taskRoutes from "./routes/taskRoutes.js";
+import DB from "./models/db.js";
+
+DB.createDB();
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 

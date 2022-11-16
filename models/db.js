@@ -1,4 +1,5 @@
 import fs from 'fs';
+import zlib from 'zlib';
 
 export default class DB {
     static existsDB() {
@@ -13,7 +14,9 @@ export default class DB {
             return false;
         } else {
             try {
-                fs.writeFileSync(process.env.DB_FILE, "[]");
+                let str = "[]";
+                str = zlib.brotliCompressSync(str);
+                fs.writeFileSync(process.env.DB_FILE, str);
                 return true;
             } catch (e) {
                 throw new Error("Can't create DB file");
@@ -22,7 +25,9 @@ export default class DB {
     }
     static resetDB() {
         try {
-            fs.writeFileSync(process.env.DB_FILE, "[]");
+            let str = "[]";
+            str = zlib.brotliCompressSync(str);
+            fs.writeFileSync(process.env.DB_FILE, str);
         } catch (e) {
             throw new Error("can't reset this file");
         }
@@ -30,7 +35,7 @@ export default class DB {
     static searchElementById(i) {
         let data = [];
         try {
-            data = JSON.parse(fs.readFileSync(process.env.DB_FILE, "utf-8"));
+            data = JSON.parse(zlib.brotliDecompressSync(fs.readFileSync(process.env.DB_FILE)));
         } catch (e) {
             throw new Error("Can't Read or Parse data from DB file");
         }
@@ -50,7 +55,7 @@ export default class DB {
     static searchElementByTitle(i) {
         let data = [];
         try {
-            data = JSON.parse(fs.readFileSync(process.env.DB_FILE, "utf-8"));
+            data = JSON.parse(zlib.brotliDecompressSync(fs.readFileSync(process.env.DB_FILE)));
         } catch (e) {
             throw new Error("Can't Read or Parse data from DB file");
         }
@@ -70,7 +75,7 @@ export default class DB {
     static allData() {
         let data = [];
         try {
-            data = JSON.parse(fs.readFileSync(process.env.DB_FILE, "utf-8"));
+            data = JSON.parse(zlib.brotliDecompressSync(fs.readFileSync(process.env.DB_FILE)));
         } catch (e) {
             throw new Error("Can't Read or Parse data from DB file");
         }
@@ -79,7 +84,7 @@ export default class DB {
     static addTask(title, completed) {
         let data = [];
         try {
-            data = JSON.parse(fs.readFileSync(process.env.DB_FILE, "utf-8"));
+            data = JSON.parse(zlib.brotliDecompressSync(fs.readFileSync(process.env.DB_FILE)));
         } catch (e) {
             throw new Error("Can't Read or Parse DB file");
         }
@@ -112,7 +117,7 @@ export default class DB {
                 temp = data[data.length - 1].id;
             }
             data = JSON.stringify(data);
-            fs.writeFileSync(process.env.DB_FILE, data);
+            fs.writeFileSync(process.env.DB_FILE, zlib.brotliCompressSync(data));
             return temp;
         } catch (e) {
             throw new Error("Can't write on DB file");
@@ -126,7 +131,7 @@ export default class DB {
         }
 
         try {
-            data = JSON.parse(fs.readFileSync(process.env.DB_FILE, "utf-8"));
+            data = JSON.parse(zlib.brotliDecompressSync(fs.readFileSync(process.env.DB_FILE)));
         } catch (e) {
             throw new Error("Can't Read or Parse DB file");
         }
@@ -145,7 +150,7 @@ export default class DB {
 
                 try {
                     data = JSON.stringify(data);
-                    fs.writeFileSync(process.env.DB_FILE, data);
+                    fs.writeFileSync(process.env.DB_FILE, zlib.brotliCompressSync(data));
                     return true;
                 } catch (e) {
                     throw new Error("Can't write on DB file");
@@ -163,7 +168,7 @@ export default class DB {
         }
 
         try {
-            data = JSON.parse(fs.readFileSync(process.env.DB_FILE, "utf-8"));
+            data = JSON.parse(zlib.brotliDecompressSync(fs.readFileSync(process.env.DB_FILE)));
         } catch (e) {
             throw new Error("Can't Read or Parse DB file");
         }
@@ -174,7 +179,7 @@ export default class DB {
 
                 try {
                     data = JSON.stringify(data);
-                    fs.writeFileSync(process.env.DB_FILE, data);
+                    fs.writeFileSync(process.env.DB_FILE, zlib.brotliCompressSync(data));
                     return true;
                 } catch (e) {
                     throw new Error("Can't Write on DB file");
@@ -195,7 +200,7 @@ export default class DB {
 
         if (data instanceof Array) {
             try {
-                fs.writeFileSync(process.env.DB_FILE, JSON.stringify(data));
+                fs.writeFileSync(process.env.DB_FILE, zlib.brotliCompressSync(JSON.stringify(data)));
             } catch (e) {
                 throw new Error("Can't write on DB file");
             }
