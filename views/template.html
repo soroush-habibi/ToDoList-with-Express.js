@@ -41,9 +41,23 @@
 
         <div class="row mb-4">
             <div class="col">
+                <input type="radio" name="status" class="form-check-input" value="true" id="all" checked>
+                <label for="all" class="me-4 ps-2 user-select-none">All</label>
+                <input type="radio" name="status" class="form-check-input" value="true" id="completed">
+                <label for="completed" class="me-4 ps-2 user-select-none">Completed</label>
+                <input type="radio" name="status" class="form-check-input" value="true" id="in-progress">
+                <label for="in-progress" class="me-4 ps-2 user-select-none">In Progress</label>
                 <ul class="list-group lh-lg d-none">
                 </ul>
                 <h2 class="d-none text-center" width="100%">Database is empty</h2>
+            </div>
+
+            <div class="col-12">
+                <div id="pagination" class="justify-content-center align-items-center d-flex mt-4 d-none">
+                    <button id="prev-button" class="btn btn-primary">&leftarrow;</button>
+                    <label id="page-label" class="mx-3">Page 1 of 1</label>
+                    <button id="next-button" class="btn btn-primary">&rightarrow;</button>
+                </div>
             </div>
         </div>
     </div>

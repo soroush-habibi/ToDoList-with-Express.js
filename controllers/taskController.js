@@ -19,7 +19,7 @@ export default class taskController {
             const page = parseInt(req.query.page);
             const limit = parseInt(req.query.limit);
             const status = parseInt(req.query.status);            //0 => all   ,   1 => completed   ,   2 => in progress
-            pageCount = parseInt(Object.keys(tasks).length / limit);
+            pageCount = parseInt((Object.keys(tasks).length - 1) / limit) + 1;
 
             if (page <= 0 || limit <= 0) {
                 res.status(400).json({
@@ -40,6 +40,7 @@ export default class taskController {
                         return false;
                     }
                 });
+                pageCount = parseInt((Object.keys(tasks).length - 1) / limit) + 1;
                 tasks = tasks.slice((page - 1) * limit, page * limit);
             } else if (status == 2) {
                 tasks = tasks.filter((value) => {
@@ -49,6 +50,7 @@ export default class taskController {
                         return true;
                     }
                 });
+                pageCount = parseInt((Object.keys(tasks).length - 1) / limit) + 1;
                 tasks = tasks.slice((page - 1) * limit, page * limit);
             } else {
                 res.status(400).json({
