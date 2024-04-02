@@ -9,7 +9,7 @@ pipeline {
 
     stage('log') {
       steps {
-        sh 'ls -lh'
+        sh 'cat Jenkinsfile'
       }
     }
 
