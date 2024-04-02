@@ -14,4 +14,11 @@ pipeline {
     }
 
   }
+  post {
+    failure {
+        mail to: 'sshhsiteariair@gmail.com',
+             subject: "Failed Pipeline",
+             body: "Something is wrong"
+    }
+  }
 }
